@@ -1,0 +1,8 @@
+<div>
+  <button *ngIf="!(state | async)" (click)="startGame()">Start game</button>
+  <div *ngIf="(state | async) as state">
+    <h1>Current Word : {{ state.currentWord }}</h1>
+    <button (click)="correct()">Correct !</button>
+    <button (click)="skip()">Skip !</button>
+  </div>
+</div>
