@@ -1,3 +1,22 @@
-<p>
-  This is Home Module
-</p>
+<div [ngSwitch]="localState" class="content">
+  <p *ngSwitchCase="'Nothing'">
+    No current game yet !
+  </p>
+
+  <p *ngSwitchCase="'Playing'">
+    {{ gameState.currentWord }}
+  </p>
+
+  <p (click)="start()" *ngSwitchCase="'Waiting'">
+    Please put your phone in landscape and tap the screen to start
+  </p>
+
+  <p *ngSwitchCase="'Correct'">
+    Correct !
+  </p>
+  <p *ngSwitchCase="'Skip'">
+    Skip !
+  </p>
+
+  <p *ngSwitchCase="'Score'">Your Score is : {{ score.score }}</p>
+</div>

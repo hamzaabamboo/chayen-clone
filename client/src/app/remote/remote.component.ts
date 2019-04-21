@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GameService, GameState, GameInfo } from '../game.service';
 import { Observable } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
+import { WordsService } from './words.service';
 
 @Component({
   selector: 'app-remote',
@@ -11,9 +12,19 @@ import { Socket } from 'ngx-socket-io';
 export class RemoteComponent implements OnInit {
   state: Observable<GameState>;
   info: GameInfo;
+  banks: string[];
+  bank: string;
 
-  constructor(private gameService: GameService, private socket: Socket) {
-    this.state = this.gameService.state;
+  constructor(
+    private gameService: GameService,
+    private words: WordsService,
+    private socket: Socket
+  ) {
+    this.state = this.gameService.state$;
+  }
+
+  choose(bank: string) {
+    this.bank = bank;
   }
 
   async startGame() {
@@ -31,7 +42,8 @@ export class RemoteComponent implements OnInit {
 
   async ngOnInit() {
     this.info = await this.gameService.getInfo();
-    console.log(this.info);
+    this.words.banks$.subscribe(banks => (this.banks = banks));
+    this.words.getWordBanks();
     this.state.subscribe(state => {
       if (this.info && state && state.count >= this.info.count) {
         this.gameService.end().then(console.log);

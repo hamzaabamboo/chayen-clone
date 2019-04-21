@@ -17,7 +17,6 @@ import notFoundHandler from './middlewares/notFoundHandler';
 import routes from './routes';
 import { Logger, ILogger } from './utils/logger';
 import { socketHandler } from './controllers/socket/socketHandler';
-import { Game } from './game';
 
 export class Application {
   app: express.Application;
@@ -32,6 +31,7 @@ export class Application {
     this.server = new HTTPServer(this.app);
     this.io = socket(this.server);
 
+    this.startSocketServer();
     this.app.locals.name = this.config.name;
     this.app.locals.version = this.config.version;
     this.app.use(require('express-status-monitor')());
@@ -59,11 +59,12 @@ export class Application {
       }`
     );
     await this.startServer();
-    this.startSocketServer();
   };
 
   startSocketServer() {
-    this.io.on('connection', socketHandler).on('error', nodeErrorHandler);
+    this.io
+      .on('connection', socketHandler(this.io))
+      .on('error', nodeErrorHandler);
   }
 
   startServer(): Promise<boolean> {

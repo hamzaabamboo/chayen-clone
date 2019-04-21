@@ -1,9 +1,10 @@
-import { Socket } from 'socket.io';
+import { Socket, Server } from 'socket.io';
 import { Game } from '../../game';
+import { words } from '../../game/words';
 
 let game: Game = null;
 
-export const socketHandler = (socket: Socket) => {
+export const socketHandler = (io: Server) => (socket: Socket) => {
   socket.emit('state', game && game.state);
   socket.emit('info', game && game.info);
 
@@ -12,27 +13,36 @@ export const socketHandler = (socket: Socket) => {
   });
 
   socket.on('start', (bank: string) => {
+    console.log('start na');
     game = new Game(bank);
     game.setWord();
-    socket.emit('state', game.state);
-    socket.emit('info', game.info);
+    io.sockets.emit('state', game.state);
+    io.sockets.emit('info', game.info);
   });
 
   socket.on('correct', () => {
+    if (!game) return;
     game.answer('Correct');
-    socket.emit('state', game.state);
+    io.sockets.emit('state', game.state);
   });
 
   socket.on('skip', () => {
+    if (!game) return;
     game.answer('Skip');
-    socket.emit('state', game.state);
+    io.sockets.emit('state', game.state);
+  });
+
+  socket.on('banks', () => {
+    console.log('Bank !');
+    socket.emit('banks', Object.keys(words));
   });
 
   socket.on('end', () => {
+    if (!game) return;
     const score = game.end();
-    socket.emit('score', score);
-    socket.emit('state', null);
-    socket.emit('info', null);
+    io.sockets.emit('score', score);
+    io.sockets.emit('state', null);
+    io.sockets.emit('info', null);
     game = null;
   });
 };

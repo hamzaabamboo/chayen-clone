@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
-  state = this.socket.fromEvent<GameState>('state');
+  state$ = this.socket.fromEvent<GameState>('state');
+  info$ = this.socket.fromEvent<GameInfo>('info');
 
   constructor(private socket: Socket) {}
 
