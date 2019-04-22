@@ -31,10 +31,12 @@
     "pg": "^7.4.3",
     "reflect-metadata": "^0.1.12",
     "socket.io": "^2.2.0",
+    "socket.io-redis": "^5.2.0",
     "typeorm": "^0.2.7",
     "winston": "^3.1.0"
   },
   "devDependencies": {
+    "@types/socket.io-redis": "^1.0.25",
     "@types/bcryptjs": "^2.4.2",
     "@types/chai": "^4.1.5",
     "@types/chai-http": "^3.0.5",

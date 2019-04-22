@@ -17,6 +17,8 @@ services:
     build:
       context: ./server
     environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
       - APP_PORT=${BACKEND_PORT}
       - APP_HOST=0.0.0.0
       - SECRET_KEY=${SECRET_KEY}

@@ -10,6 +10,8 @@ services:
     environment:
       - APP_PORT=${BACKEND_PORT}
       - APP_HOST=0.0.0.0
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
       - SECRET_KEY=${SECRET_KEY}
       - DB_HOST=postgres
       - DB_PORT=5432

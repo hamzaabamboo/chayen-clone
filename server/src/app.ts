@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { Server as HTTPServer } from 'http';
 import socket, { Server as SocketServer, Socket } from 'socket.io';
+import redisAdapter from 'socket.io-redis';
 import { createConnection } from 'typeorm';
 
 import config from './config/config';
@@ -30,6 +31,12 @@ export class Application {
     this.app = express();
     this.server = new HTTPServer(this.app);
     this.io = socket(this.server);
+    this.io.adapter(
+      redisAdapter({
+        host: this.config.redis.host,
+        port: this.config.redis.port
+      })
+    );
 
     this.startSocketServer();
     this.app.locals.name = this.config.name;

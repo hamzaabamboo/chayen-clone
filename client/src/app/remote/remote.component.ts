@@ -28,7 +28,7 @@ export class RemoteComponent implements OnInit {
   }
 
   async startGame() {
-    this.gameService.startGame('');
+    this.gameService.startGame(this.bank);
     this.info = await this.gameService.getInfo();
   }
 

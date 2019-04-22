@@ -1,28 +1,32 @@
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 
-import errors from "../assets/i18n/en/errors";
-import messages from "../assets/i18n/en/messages";
+import errors from '../assets/i18n/en/errors';
+import messages from '../assets/i18n/en/messages';
 
 dotenv.config();
 
-const isTestEnvironment = process.env.NODE_ENV === "test";
+const isTestEnvironment = process.env.NODE_ENV === 'test';
 
 export default {
   errors,
   messages,
-  name: "Overly Complicated Fake Chayen",
-  version: "0.1",
-  host: process.env.APP_HOST || "127.0.0.1",
-  environment: process.env.NODE_ENV || "development",
+  name: 'Overly Complicated Fake Chayen',
+  version: '0.1',
+  redis: {
+    host: process.env.REDIS_HOST || '127.0.0.1',
+    port: parseInt(process.env.REDIS_PORT) || 6379
+  },
+  host: process.env.APP_HOST || '127.0.0.1',
+  environment: process.env.NODE_ENV || 'development',
   port:
     (isTestEnvironment ? process.env.TEST_APP_PORT : process.env.APP_PORT) ||
-    "8000",
+    '8000',
   pagination: {
     page: 1,
     maxRows: 20
   },
   auth: {
-    secretKey: process.env.SECRET_KEY || "4C31F7EFD6857D91E729165510520424"
+    secretKey: process.env.SECRET_KEY || '4C31F7EFD6857D91E729165510520424'
   },
   db: {
     host: isTestEnvironment ? process.env.TEST_DB_HOST : process.env.DB_HOST,
@@ -36,7 +40,7 @@ export default {
     database: isTestEnvironment ? process.env.TEST_DB_NAME : process.env.DB_NAME
   },
   logging: {
-    dir: process.env.LOGGING_DIR || "logs",
-    level: process.env.LOGGING_LEVEL || "debug"
+    dir: process.env.LOGGING_DIR || 'logs',
+    level: process.env.LOGGING_LEVEL || 'debug'
   }
 };
